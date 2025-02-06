@@ -13,13 +13,26 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.post('/ollama', async (req, res) => {
-    const ollamaResponse = await axios.post('http://localhost:11434/api/generate', {
-        model: "codellama:7b-instruct",
-        prompt: req.body.message,
-        context: req.body.context,
-        stream: false
-    });
-    res.json({ message: ollamaResponse.data.response, context: ollamaResponse.data.context });
+  try {
+      const response = await fetch('http://localhost:11434/api/generate', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+              model: "codellama:34b",
+              prompt: req.body.message,
+              context: req.body.context,
+              stream: false
+          })
+      });
+
+      const data = await response.json();
+      res.json({ message: data.response, context: data.context });
+  } catch (error) {
+      console.error("Error communicating with Ollama:", error);
+      res.status(500).json({ error: "Failed to fetch response from Ollama" });
+  }
 });
 
 app.listen(port, () => {

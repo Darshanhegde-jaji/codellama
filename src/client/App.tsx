@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import ReactMarkdown from 'react-markdown'
 import axios from 'axios'
-
+import {CopyToClipboard} from 'react-copy-to-clipboard';
 let context: Array<number>
 
 const App: React.FC = () => {
@@ -10,6 +10,11 @@ const App: React.FC = () => {
   const [responses, setResponses] = useState<string[]>([])
   const [inputDisabled, setInputDisabled] = useState(false)
   const focusTargetRef = useRef<HTMLTextAreaElement>(null)
+
+  // const state = {
+  //   value: '',
+  //   copied: false,
+  // };
 
   useEffect(() => {
     scrollToBottom()
@@ -75,6 +80,10 @@ const App: React.FC = () => {
                   >
                     <span className="leading-5">
                       <ReactMarkdown>{response}</ReactMarkdown>
+                      {/* <CopyToClipboard text={response}
+                        onCopy={() => state.copied = true}>
+                        <button>Copy to clipboard with button</button>
+                      </CopyToClipboard> */}
                     </span>
                   </div>
                 </div>
